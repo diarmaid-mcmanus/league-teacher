@@ -21,7 +21,7 @@ export default class Landing extends Component {
 			<Picker selectedValue={this.state.region} onValueChange={(itemValue, itemIndex) => this.setState({region: itemValue})}>
 				{regionPickers}
 			</Picker> 
-			<Button title="Go" accessibilityLabel="Press to store this information within the app as your default account" />
+			<Button title="Go" accessibilityLabel="Press to store this information within the app as your default account" onPress={this.props.action}/>
 		</View> 
 		);
 	}

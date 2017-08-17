@@ -4,12 +4,29 @@ import Landing from './Landing'
 import MainPage from './MainPage'
 
 export default class App extends React.Component {
+
+constructor(props) {
+    super(props);
+    this.state = {
+        view: 'landing'
+      };
+  }
+
   render() {
-    return (
-      <View style={styles.container}>
-        <MainPage />
-      </View>
-    );
+    if(this.state.view == 'landing') {
+      return (
+        <View style={styles.container}>
+          <Landing action={() => this.setState({view: 'main'})} />
+        </View>
+      );
+    }
+    else if (this.state.view == 'main') {
+      return (
+        <View style={styles.container}>
+          <MainPage />
+        </View>
+      );
+    }
   }
 }
 
