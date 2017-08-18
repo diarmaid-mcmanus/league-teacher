@@ -5,8 +5,13 @@ export class Landing extends Component {
     constructor(props) {
  	super(props);
  	this.state = {
-    	    region: 'br'
+    	    region: 'na',
+	    username: 'deadheartsbeat'
   	};
+    }
+
+    checkUser() {
+	this.props.action(this.state.username, this.state.region);
     }
 
     render() {
@@ -14,23 +19,19 @@ export class Landing extends Component {
 			 'ru', 'tr', 'jp', 'sea', 'kr', 'pbe'];
 
 	const regionPickers = regions.map((region, key) => <Picker.Item key={key} label={region} value={region} />); 
-
 	return (
 	    <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex:1, flexDirection: 'column' }}> 
 	      <View style={{flex:1, flexDirection: 'column' }}>
-		<View style={{flex:1/3, alignItems:'center'}}>
-		  <View style={{flex:4}}></View>
-		  <View style={{flex:1}}>
-		    <TextInput style={{flex:1, alignSelf: 'flex-end'}} placeholder="Summoner Name" />
-		  </View>
+		<View style={{flex:1/3, flexDirection: 'column', justifyContent: 'flex-end', alignItems:'center'}}>
+		    <TextInput value={this.state.username} onChangeText={(value) => this.setState({username: value})} placeholder="Summoner Name" />
 		</View>
 		<View style={{flex:1/3, flexDirection: 'column' }}>
-		  <Picker style={{flex:1}} selectedValue={this.state.region} onValueChange={(itemValue, itemIndex) => this.setState({region: itemValue})}>
+		  <Picker selectedValue={this.state.region} onValueChange={(itemValue, itemIndex) => this.setState({region: itemValue})}>
 		    {regionPickers}
 		  </Picker> 
 		</View>
 		<View style={{flex:1/3, flexDirection: 'column' }}>
-		  <Button style={{flex:1}} title="Go" accessibilityLabel="Press to store this information within the app as your default account" onPress={this.props.action}/>
+		  <Button title="Go" accessibilityLabel="Press to store this information within the app as your default account" onPress={this.checkUser.bind(this)}/>
 		</View>
 	      </View>
 	    </TouchableWithoutFeedback>
