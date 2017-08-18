@@ -8,6 +8,12 @@ const regions = {
     euw: 'euw1'
 };
 
+function delay(t) {
+   return new Promise(function(resolve) { 
+       setTimeout(resolve, t);
+   });
+}
+
 function handleErrors(response) {
     if(!response.ok) {
 	throw Error(response.statusText);
@@ -25,12 +31,12 @@ function makeApiRequest(endpoint, region) {
     }).then(handleErrors);
 }
 
-export function userInGame(summonerId) {
-    return makeApiRequest(spectatorEndpoint + summonerId)
+export function whenUserInGame(summonerId, region) {
+    return makeApiRequest(spectatorEndpoint + summonerId, region)
 	.then(spectator_data => {
 	    return spectator_data;
 	}).catch(error => {
-	    console.log("Oh no!");
+	    return delay(5000).then(whenUserInGame.bind(null, summonerId, region));
 	});
 }
 

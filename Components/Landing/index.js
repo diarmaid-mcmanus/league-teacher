@@ -6,7 +6,7 @@ export class Landing extends Component {
  	super(props);
  	this.state = {
     	    region: 'na',
-	    username: 'deadheartsbeat'
+	    username: 'rychiu26'
   	};
     }
 
