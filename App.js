@@ -4,7 +4,7 @@ import { StatusBar, Image, StyleSheet, Text, View } from 'react-native';
 import { Landing } from './Components/Landing';
 import { MainPage } from './Components/MainPage';
 import { Opponent } from './Components/Opponent';
-import { getSummonerInformation, whenUserInGame } from './Lib/LeagueApi';
+import { getSummonerInformation, onGameStateChange } from './Lib/LeagueApi';
 
 const states = {
     findUser: Symbol(),
@@ -53,11 +53,10 @@ export default class App extends React.Component {
 		    inGame={this.state.inGame}
 		    region={this.state.region}
 		    inGameCheck={(summonerId, region) =>
-				 whenUserInGame(summonerId, region)
-				     .then(inGame => {
-					 if (inGame) this.setState({
-					     inGame
-					 });
+				 onGameStateChange(summonerId, region,
+						   inGame => {
+						       if (inGame != this.state.inGame)
+							   this.setState({ inGame });
 				 })} />
 		</View>
 	    )

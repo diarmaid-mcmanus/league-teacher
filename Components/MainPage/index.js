@@ -14,7 +14,7 @@ export class MainPage extends Component {
 	super(props);
     }
     render() {
-	if (!this.props.inGame) this.props.inGameCheck(this.props.userInfo.summonerId, this.props.region);
+	this.props.inGameCheck(this.props.userInfo.summonerId, this.props.region);
 	return (
 	    <View style={{flex:1, flexDirection: 'column' }}> 
 	      <View style={{flex:1/3, justifyContent: 'flex-end', flexDirection: 'column', alignSelf: 'center'}}>

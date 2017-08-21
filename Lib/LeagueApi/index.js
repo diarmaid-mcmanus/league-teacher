@@ -1,18 +1,12 @@
 const url = ".api.riotgames.com";
 const spectatorEndpoint = "/lol/spectator/v3/active-games/by-summoner/";
 const summonerEndpoint = "/lol/summoner/v3/summoners/by-name/";
-const api_key = "";
+const api_key = "RGAPI-20df4091-47a7-4e60-9d4a-65b642da1f41";
 
 const regions = {
     na: "na1",
     euw: 'euw1'
 };
-
-function delay(t) {
-   return new Promise(function(resolve) { 
-       setTimeout(resolve, t);
-   });
-}
 
 function handleErrors(response) {
     if(!response.ok) {
@@ -31,14 +25,24 @@ function makeApiRequest(endpoint, region) {
     }).then(handleErrors);
 }
 
-export function whenUserInGame(summonerId, region) {
-    return makeApiRequest(spectatorEndpoint + summonerId, region)
-	.then(spectator_data => {
-	    return spectator_data;
-	}).catch(error => {
-	    return delay(5000).then(whenUserInGame.bind(null, summonerId, region));
-	});
+export function onGameStateChange(summonerId, region, func) {
+    function checkState() {
+	makeApiRequest(spectatorEndpoint + summonerId, region)
+	    .then(spectator_data => {
+		func(true);
+	    }).catch(error => {
+		func(false);
+	    });
+    }
+
+    checkState();
+    setInterval(() => {
+	checkState();
+    }, 5000);
 }
+
+
+    
 
 export function getSummonerInformation(summonerName, region) {
     return makeApiRequest(summonerEndpoint + summonerName, region)
@@ -48,6 +52,6 @@ export function getSummonerInformation(summonerName, region) {
 		summonerId: player_data.id,
 		profileIconId: player_data.profileIconId
 	    };
-	});
+	}).catch(error => console.log(error));
 }
 
